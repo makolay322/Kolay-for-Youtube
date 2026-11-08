@@ -25,7 +25,7 @@ Kolay for YouTube is a free, open-source browser extension for **Chrome, Edge, B
 | Browser | |
 |---|---|
 | Chrome, Edge, Brave, Opera, Vivaldi | [**Chrome Web Store**](https://chromewebstore.google.com/detail/kolay-for-youtube/jlbgeidkdbpnbpimklbcgdblidlbgiff) |
-| Firefox 140+ (desktop) | Firefox Add-ons (link on the [website](https://makolay322.github.io/Kolay-for-Youtube/)) |
+| Firefox 140+ (desktop) | [**Firefox Add-ons**](https://addons.mozilla.org/en-US/firefox/addon/kolay-for-youtube/) |
 
 The store versions update themselves. To install a specific version by hand, download it from [Releases](https://github.com/makolay322/Kolay-for-Youtube/releases):
 
