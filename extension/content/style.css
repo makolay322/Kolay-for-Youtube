@@ -66,3 +66,25 @@ html.ytx-gridOn ytd-rich-grid-renderer { --ytd-rich-grid-items-per-row: var(--yt
 /* Progress bar color */
 html.ytx-accentOn .ytp-play-progress, html.ytx-accentOn .ytp-scrubber-button.ytp-swatch-background-color,
 html.ytx-accentOn .ytp-swatch-background-color { background: var(--ytx-accent) !important; }
+
+/* --- Gemini summary button on video tiles --- */
+[data-ytx-gem] { position: relative; }
+.ytx-gem-btn {
+  position: absolute; top: 8px; left: 8px; z-index: 10; width: 28px; height: 28px; padding: 0;
+  display: flex; align-items: center; justify-content: center; border: 0; border-radius: 50%;
+  background: rgba(0, 0, 0, .78); cursor: pointer; opacity: 0; transition: opacity .12s, transform .12s;
+}
+[data-ytx-gem]:hover > .ytx-gem-btn, .ytx-gem-btn:focus-visible, .ytx-gem-btn.ytx-gem-busy { opacity: 1; }
+.ytx-gem-btn:hover { transform: scale(1.12); background: rgba(0, 0, 0, .92); }
+.ytx-gem-btn.ytx-gem-busy svg { animation: ytx-gem-spin 1s linear infinite; }
+@keyframes ytx-gem-spin { to { transform: rotate(360deg); } }
+
+/* Watch page pill */
+.ytx-gem-watch {
+  display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; margin-right: 8px; border: 0; border-radius: 18px;
+  background: var(--yt-spec-badge-chip-background, rgba(128, 128, 128, .2)); color: var(--yt-spec-text-primary, #fff);
+  font: 500 14px/36px Roboto, Arial, sans-serif; cursor: pointer; white-space: nowrap;
+}
+.ytx-gem-watch:hover { background: var(--yt-spec-button-chip-background-hover, rgba(128, 128, 128, .35)); }
+.ytx-gem-watch svg path { fill: #4285f4; }
+.ytx-gem-watch.ytx-gem-busy svg { animation: ytx-gem-spin 1s linear infinite; }
