@@ -46,6 +46,11 @@
       tg('e_premium', 'Prefer the high-bitrate version when available', true, 'If a “Premium / enhanced bitrate” option exists at the chosen resolution, it is used; otherwise falls back to the regular one.', { quick: true, dep: 'e_quality!=auto' }),
     ], TOP),
 
+    sec('gemini', 'Gemini summary (YouTube)', 'gemini', 'Adds a ✦ button to video tiles. It fetches the video’s transcript and opens Gemini in a new tab with a ready prompt that asks for a short summary.', [
+      tg('m_gemini', 'Show the Gemini summary button on video tiles', true, 'Appears when you hover over a video. The transcript is read from YouTube and only handed to the Gemini tab you open.', { quick: true }),
+      tg('g_autoSend', 'Send the prompt to Gemini automatically', true, 'When off, the prompt is only typed into the chat box and you press send yourself.', { dep: 'm_gemini' }),
+    ], TOP),
+
     sec('hide', 'Hiding (YouTube)', 'clutter', 'Each item can be turned on or off separately. Detailed filters are in the “Other” sections below.', [
       tg('c_shorts', 'Shorts (everywhere)', false, 'Home, search, subscriptions, recommendations, channel pages and the side menu.', { cls: 'hideShorts', quick: true }),
       tg('c_topicShelves', '“Explore new topics” row on the home page', true, '', { quick: true }),
