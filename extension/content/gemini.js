@@ -81,16 +81,33 @@
     return null;
   };
 
+  // Attaches the transcript as a .txt file through a (synthetic) paste event; true once Gemini shows the attachment.
+  async function attach(el, name, text) {
+    el.focus();
+    const before = document.querySelectorAll('uploader-file-preview').length;
+    const dt = new DataTransfer();
+    dt.items.add(new File([text], name, { type: 'text/plain' }));
+    el.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
+    return !!(await waitFor(() => document.querySelectorAll('uploader-file-preview').length > before, 6000));
+  }
+
   let handled = false;
   async function deliver(p) {
     if (handled) return;
     handled = true;
     try { chrome.storage.local.remove(KEY); } catch (e) { /* ignore */ }
     const el = await waitFor(editor, 25000);
-    if (!el || !fill(el, p.prompt)) { banner(S.manual, p.prompt); return; }
+    if (!el) { banner(S.manual, p.prompt); return; }
+    let text = p.prompt;
+    if (p.transcript) {
+      if (await attach(el, p.fileName || 'transcript.txt', p.transcript)) await sleep(1200);
+      else text = p.prompt + '\n\nTRANSCRIPT:\n' + p.transcript.slice(0, 26000); // no attachment: inline (the box holds 32,000 characters)
+    }
+    if (!fill(el, text)) { banner(S.manual, p.prompt); return; }
     hideBanner();
     if (!p.autoSend) return;
-    const btn = await waitFor(sendButton, 8000);
+    await sleep(800); // let an upload in progress disable the send button
+    const btn = await waitFor(sendButton, 30000);
     if (btn) btn.click();
     else {
       const o = { key: 'Enter', code: 'Enter', keyCode: 13, which: 13, bubbles: true, cancelable: true };

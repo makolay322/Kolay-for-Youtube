@@ -5,8 +5,7 @@
   const YTX = window.YTX;
   const PENDING_KEY = 'ytxGemini';
   const GEMINI_URL = 'https://gemini.google.com/app';
-  // Gemini's chat box silently cuts text at 32,000 characters, so the transcript has to fit in what is left after the instructions
-  const MAX_CHARS = 26000;
+  const MAX_CHARS = 1500000; // the transcript travels as an attached .txt file (the chat box itself is limited to 32,000 characters)
   const TILE_ATTR = 'data-ytx-gem';
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -88,16 +87,11 @@
     try { return new Intl.DisplayNames(['en'], { type: 'language' }).of(code) || 'English'; } catch (e) { return 'English'; }
   }
 
+  // Short instructions for the chat box; the transcript itself is attached as a file by content/gemini.js
   function buildPrompt(info, tr) {
-    let text = tr.text, cut = false;
-    if (text.length > MAX_CHARS) { // keep the beginning and the end, drop the middle
-      const head = Math.floor(MAX_CHARS * 0.55);
-      text = text.slice(0, head) + ' […] ' + text.slice(text.length - (MAX_CHARS - head));
-      cut = true;
-    }
     const lang = languageName();
     return [
-      `Below is the transcript of a YouTube video (spoken language: ${tr.lang || 'unknown'}). Summarize the video in ${lang}, in a way that can be scanned quickly.`,
+      `The attached text file is the transcript of a YouTube video (spoken language: ${tr.lang || 'unknown'}). Summarize the video in ${lang}, in a way that can be scanned quickly.`,
       '',
       `Video: ${info.title || '(untitled)'}${info.channel ? ' — ' + info.channel : ''}`,
       `Link: https://www.youtube.com/watch?v=${info.id}`,
@@ -117,10 +111,6 @@
       '- Skip greetings, ads, calls to subscribe and repetition.',
       '- The transcript may be auto-generated: silently fix obvious spelling or recognition mistakes without changing the meaning.',
       '- Use plain, short sentences.',
-      ...(cut ? ['- The transcript is very long, so the middle part was left out (marked […]); summarize what is given and mention that the middle is missing.'] : []),
-      '',
-      'TRANSCRIPT:',
-      text,
     ].join('\n');
   }
 
@@ -143,7 +133,7 @@
     await store({ token, state: 'loading', ts: Date.now(), lang: uiLang() });
     try {
       const tr = await fetchTranscript(id);
-      await store({ token, state: 'ready', ts: Date.now(), lang: uiLang(), prompt: buildPrompt(info, tr), autoSend: !!YTX.s.g_autoSend });
+      await store({ token, state: 'ready', ts: Date.now(), lang: uiLang(), prompt: buildPrompt(info, tr), transcript: tr.text.slice(0, MAX_CHARS), fileName: 'transcript-' + id + '.txt', autoSend: !!YTX.s.g_autoSend });
     } catch (e) {
       YTX.log('gemini transcript error', e);
       await store({ token, state: 'error', ts: Date.now(), lang: uiLang(), message: e && e.none ? str().none : str().fail });
