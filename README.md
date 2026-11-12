@@ -83,9 +83,7 @@ node tools/check-i18n.js     # every locale has every string
 
 ### Releasing
 
-1. Bump `version` in `extension/manifest.json` and run `./tools/build.sh`.
-2. Upload `dist/kolay-for-youtube-<ver>-chrome.zip` to the Chrome Web Store dashboard and `dist/kolay-for-youtube-<ver>-firefox.zip` to AMO. AMO does not need the source zip because nothing is minified or bundled.
-3. Tag the commit (`git tag v<ver> && git push origin v<ver>`). CI publishes the GitHub release.
+Bump `version` in `extension/manifest.json` and push to `main`. CI uploads the Chrome and Firefox packages to both stores, tags `v<ver>` and publishes the GitHub release. A push without a version bump releases nothing. One-time setup of the store credentials is described in [AGENTS.md](AGENTS.md).
 
 ### Translations
 
