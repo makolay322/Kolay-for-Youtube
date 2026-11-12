@@ -26,9 +26,13 @@
     ru: { tip: 'Кратко пересказать в Gemini', busy: 'Получение транскрипта…', none: 'У этого видео нет транскрипта.', fail: 'Не удалось получить транскрипт.' },
     ja: { tip: 'Gemini で要約', busy: '文字起こしを取得中…', none: 'この動画には文字起こしがありません。', fail: '文字起こしを取得できませんでした。' },
   };
+  // Same rule as the settings page: the chosen language, or the browser's UI language when set to automatic
   const uiLang = () => {
     let l = YTX.s.ui_lang;
-    if (!l || l === 'auto') l = (navigator.language || 'en').toLowerCase().split(/[-_]/)[0];
+    if (!l || l === 'auto') {
+      try { l = chrome.i18n.getUILanguage(); } catch (e) { l = ''; }
+      l = (l || navigator.language || 'en').toLowerCase().split(/[-_]/)[0];
+    }
     return STR[l] ? l : 'en';
   };
   const str = () => STR[uiLang()];
@@ -81,10 +85,9 @@
   }
 
   // ---------- Prompt ----------
+  // The summary is written in the extension's interface language
   function languageName() {
-    let code = YTX.s.ui_lang;
-    if (!code || code === 'auto') code = (navigator.language || 'en').split(/[-_]/)[0];
-    try { return new Intl.DisplayNames(['en'], { type: 'language' }).of(code) || 'English'; } catch (e) { return 'English'; }
+    try { return new Intl.DisplayNames(['en'], { type: 'language' }).of(uiLang()) || 'English'; } catch (e) { return 'English'; }
   }
 
   // Short instructions for the chat box; the transcript itself is attached as a file by content/gemini.js
