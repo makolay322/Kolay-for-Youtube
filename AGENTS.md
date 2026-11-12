@@ -20,3 +20,10 @@ Store review still takes time on Google's / Mozilla's side.
   Never write them into files, commits, issues or chat. Setup: `tools/setup-chrome.py and tools/setup-firefox.sh`;
   new Chrome refresh token: `tools/chrome-auth.py`.
 - Check the Actions tab after pushing; if `publish` fails, read its log before retrying.
+
+## Versioning policy (owner's preference)
+
+Raise the version **slowly**. Every bump is a real store release, so:
+- Do not bump on every commit. Batch several changes into one release, and only release when the owner asks for it or the change is worth shipping.
+- Default to a **patch** bump (1.4.0 -> 1.4.1) for fixes and small tweaks. Use a **minor** bump (1.4.x -> 1.5.0) only for a clearly new feature, and a **major** bump only for breaking changes, and only when the owner says so.
+- Never skip numbers (no 1.4.0 -> 1.6.0 or 1.9.0). Check the latest tag (`git tag --sort=-v:refname | head -1`) and go one step from it.
