@@ -88,3 +88,28 @@ html.ytx-accentOn .ytp-swatch-background-color { background: var(--ytx-accent) !
 .ytx-gem-watch:hover { background: var(--yt-spec-button-chip-background-hover, rgba(128, 128, 128, .35)); }
 .ytx-gem-watch svg path { fill: #4285f4; }
 .ytx-gem-watch.ytx-gem-busy svg { animation: ytx-gem-spin 1s linear infinite; }
+
+/* Copy button next to the Gemini button on tiles */
+.ytx-gem-btn.ytx-gem-copy { left: 42px; }
+[data-ytx-gem]:hover > .ytx-gem-copy, .ytx-gem-copy:focus-visible { opacity: 1; }
+[data-ytx-gem].ytx-gem-sel > .ytx-gem-btn:not(.ytx-gem-copy) { opacity: 1; box-shadow: 0 0 0 2px #8ab4f8; }
+
+/* Copy button on the watch page */
+.ytx-gem-watch-copy {
+  display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; margin-right: 8px; border: 0; border-radius: 50%;
+  background: var(--yt-spec-badge-chip-background, rgba(128, 128, 128, .2)); color: var(--yt-spec-text-primary, #fff); cursor: pointer;
+}
+.ytx-gem-watch-copy:hover { background: var(--yt-spec-button-chip-background-hover, rgba(128, 128, 128, .35)); }
+.ytx-gem-watch-copy.ytx-gem-busy { opacity: .5; }
+
+/* Notice and "several videos" bar */
+.ytx-gem-toast, .ytx-gem-bar {
+  position: fixed; left: 24px; bottom: 24px; z-index: 2147483000; display: flex; align-items: center; gap: 10px; max-width: min(520px, 90vw);
+  padding: 10px 14px; border-radius: 10px; background: #202124; color: #e8eaed; font: 14px/1.4 Roboto, Arial, sans-serif; box-shadow: 0 4px 16px rgba(0, 0, 0, .4);
+}
+.ytx-gem-toast { opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .15s, transform .15s; }
+.ytx-gem-toast.ytx-on { opacity: 1; pointer-events: auto; transform: none; }
+.ytx-gem-bar { bottom: 76px; }
+.ytx-gem-bar.ytx-busy { opacity: .6; pointer-events: none; }
+.ytx-gem-toast button, .ytx-gem-bar button { border: 0; border-radius: 6px; padding: 6px 10px; background: transparent; color: #9aa0a6; font: inherit; cursor: pointer; }
+.ytx-gem-toast button, .ytx-gem-bar button.ytx-go { background: #8ab4f8; color: #202124; }

@@ -181,6 +181,7 @@ footer .legal { flex-basis: 100%; font-size: 12.5px; opacity: .85; }
     <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.2 4.2L19 7"/></symbol>
     <symbol id="i-chrome" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 8.4h8.8M8.9 13.8L4.5 6.2M15.1 13.8l-4.4 7.9"/></symbol>
     <symbol id="i-firefox" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M21.5 12A9.5 9.5 0 1 1 5 5.6c.2 1.3.9 2.3 1.9 2.8.6-1.8 2-3.5 4.1-4.2-.6 1.5-.3 2.9.7 3.6 2.6-.4 5.1 1.6 5.1 4.6a5.2 5.2 0 0 1-9.9 2.1"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M21.5 12c0-1.8-.5-3.5-1.4-5"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path fill="currentColor" d="M12 1.5C12.6 7.6 16.4 11.4 22.5 12 16.4 12.6 12.6 16.4 12 22.5 11.4 16.4 7.6 12.6 1.5 12 7.6 11.4 11.4 7.6 12 1.5Z"/></symbol>
     <symbol id="i-speed" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 18a9 9 0 1 1 16 0M12 13l4-4"/><circle cx="12" cy="13" r="1.6" fill="currentColor"/></symbol>
     <symbol id="i-hd" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M7 9v6M7 12h3M10 9v6M14 9v6h1.5a2.5 3 0 0 0 0-6z"/></symbol>
     <symbol id="i-eye" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c5 0 8.5 4.5 9.5 7a13 13 0 0 1-2.6 3.8M6.6 6.6A13 13 0 0 0 2.5 12c1 2.5 4.5 7 9.5 7 1.7 0 3.2-.5 4.5-1.3M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
@@ -268,6 +269,24 @@ footer .legal { flex-basis: 100%; font-size: 12.5px; opacity: .85; }
           <div class="key"><kbd>P</kbd><span data-i18n="k.p">Faster</span></div>
         </div>
       </div>
+      <div class="card big reveal">
+        <div>
+          <div class="ic"><svg><use href="#i-spark"/></svg></div>
+          <h3 data-i18n="f.gem.t">Summarize with Gemini</h3>
+          <p data-i18n="f.gem.d">A ✦ button on every video tile and on the watch page. One click reads the transcript and opens Gemini with a ready prompt. Long videos work too: the transcript is attached as a file.</p>
+        </div>
+        <div class="keys">
+          <div class="key"><kbd>✦</kbd><span data-i18n="k.gem1">Summarize</span></div>
+          <div class="key"><kbd>⧉</kbd><span data-i18n="k.gem2">Copy for any chatbot</span></div>
+          <div class="key"><kbd>⇧ click</kbd><span data-i18n="k.gem3">Select several</span></div>
+          <div class="key"><kbd>⇧ S</kbd><span data-i18n="k.gem4">On the watch page</span></div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="ic"><svg><use href="#i-filter"/></svg></div>
+        <h3 data-i18n="f.gem2.t">Your prompt, your language</h3>
+        <p data-i18n="f.gem2.d">Short summary, study notes, Q&amp;A or “is it worth watching?”, or write your own. Pick the summary language and add timestamps that link into the video.</p>
+      </div>
       <div class="card reveal">
         <div class="ic"><svg><use href="#i-hd"/></svg></div>
         <h3 data-i18n="f.q.t">Quality that sticks</h3>
@@ -335,12 +354,12 @@ footer .legal { flex-basis: 100%; font-size: 12.5px; opacity: .85; }
     <div class="band reveal">
       <div>
         <h2 data-i18n="priv.title">Your data stays yours.</h2>
-        <p data-i18n-html="priv.sub">Kolay for YouTube has no server, no analytics and no account. It never sends anything anywhere — settings live in your browser's own storage. <a href="privacy.html">Read the privacy policy</a>.</p>
+        <p data-i18n-html="priv.sub">Kolay for YouTube has no server, no analytics and no account. It never sends anything to the developer — settings live in your browser's own storage. Only the optional Gemini summary talks to YouTube and to the Gemini tab you open. <a href="privacy.html">Read the privacy policy</a>.</p>
       </div>
       <ul>
         <li><svg><use href="#i-check"/></svg><span data-i18n="priv.l1">No data collection of any kind</span></li>
-        <li><svg><use href="#i-check"/></svg><span data-i18n="priv.l2">No network requests, no remote code</span></li>
-        <li><svg><use href="#i-check"/></svg><span data-i18n="priv.l3">Only one permission: storage</span></li>
+        <li><svg><use href="#i-check"/></svg><span data-i18n="priv.l2">No servers, no remote code</span></li>
+        <li><svg><use href="#i-check"/></svg><span data-i18n="priv.l3">One permission: storage</span></li>
       </ul>
     </div>
   </div>
@@ -377,6 +396,7 @@ footer .legal { flex-basis: 100%; font-size: 12.5px; opacity: .85; }
       <details class="reveal"><summary data-i18n="q2">Is it free? Are there ads?</summary><p data-i18n="a2">Free, with no ads, no premium tier and no tracking. The full source code is on GitHub.</p></details>
       <details class="reveal"><summary data-i18n="q3">Does it work with YouTube Premium?</summary><p data-i18n="a3">Yes. With Premium, the quality setting can even pick the “enhanced bitrate” version automatically.</p></details>
       <details class="reveal"><summary data-i18n="q4">Something stopped working after a YouTube update.</summary><p data-i18n-html="a4">YouTube changes its layout often. Please <a href="https://github.com/makolay322/Kolay-for-Youtube/issues">open an issue on GitHub</a>; turning on Settings → General → Debug log helps a lot.</p></details>
+      <details class="reveal"><summary data-i18n="q6">Does the Gemini summary send my data somewhere?</summary><p data-i18n="a6">Only where you send it. The extension reads the video's transcript from YouTube and types it, with a prompt, into a Gemini tab that you open. Nothing goes through a server of ours. The copy button keeps it all on your clipboard instead, and you can turn the feature off completely.</p></details>
       <details class="reveal"><summary data-i18n="q5">Will my settings survive an update?</summary><p data-i18n="a5">Yes. Settings are kept across updates, and you can export them to a file at any time.</p></details>
     </div>
   </div>
@@ -454,8 +474,8 @@ const TR = {
   'set.l1': 'Tüm seçeneklerde anında arama', 'set.l2': 'JSON olarak dışa / içe aktarma', 'set.l3': 'Açık ve koyu tema, sistemini takip eder', 'set.l4': 'Geçmiş ya da kendi listelerin gibi sayfaları hariç tut',
   'set.l5': '8 dilde: English, Türkçe, Español, Português, Deutsch, Français, Русский, 日本語',
   'priv.title': 'Verilerin sende kalır.',
-  'priv.sub': 'Kolay for YouTube’un sunucusu, analitiği ya da hesabı yok. Hiçbir yere hiçbir şey göndermez — ayarlar tarayıcının kendi depolamasında durur. <a href="privacy.html">Gizlilik politikasını oku</a>.',
-  'priv.l1': 'Hiçbir şekilde veri toplanmaz', 'priv.l2': 'Ağ isteği yok, uzaktan kod yok', 'priv.l3': 'Tek izin: depolama (storage)',
+  'priv.sub': 'Kolay for YouTube’un sunucusu, analitiği ya da hesabı yok. Geliştiriciye hiçbir şey göndermez — ayarlar tarayıcının kendi depolamasında durur. Yalnızca isteğe bağlı Gemini özeti YouTube ve senin açtığın Gemini sekmesiyle konuşur. <a href="privacy.html">Gizlilik politikasını oku</a>.',
+  'priv.l1': 'Hiçbir şekilde veri toplanmaz', 'priv.l2': 'Sunucu yok, uzaktan kod yok', 'priv.l3': 'Tek izin: depolama (storage)',
   'ins.eyebrow': 'Kurulum', 'ins.title': 'Bir dakikadan kısa sürede hazır.', 'ins.sub': 'Chrome, Edge, Brave, Opera, Vivaldi ve Firefox’ta çalışır.',
   's1.t': 'Tarayıcına ekle', 's1.d': 'Chrome, Edge, Brave ve diğer Chromium tarayıcılar için Chrome Web Mağazası; Firefox için Firefox Eklentileri.',
   's2.t': 'Simgeyi sabitle', 's2.d': 'Araç çubuğundaki yapboz simgesine tıkla ve Kolay for YouTube’u sabitle. En çok kullanılan anahtarlar açılır pencerede.',
@@ -468,6 +488,13 @@ const TR = {
   'q4': 'YouTube güncellemesinden sonra bir şey çalışmıyor.',
   'a4': 'YouTube arayüzünü sık değiştiriyor. Lütfen <a href="https://github.com/makolay322/Kolay-for-Youtube/issues">GitHub’da bir issue aç</a>; Ayarlar → Genel → Hata ayıklama günlüğü’nü açmak çok yardımcı olur.',
   'q5': 'Güncellemeden sonra ayarlarım kalır mı?', 'a5': 'Evet. Ayarlar güncellemelerde korunur; istediğin an dosyaya da aktarabilirsin.',
+  'f.gem.t': 'Gemini ile özetle',
+  'f.gem.d': 'Her video karosunda ve izleme sayfasında bir ✦ düğmesi. Tek tıkla transkripti okur ve hazır bir istemle Gemini’yi açar. Uzun videolar da olur: transkript dosya olarak eklenir.',
+  'k.gem1': 'Özetle', 'k.gem2': 'Başka sohbet botu için kopyala', 'k.gem3': 'Birden çok seç', 'k.gem4': 'İzleme sayfasında',
+  'f.gem2.t': 'Senin istemin, senin dilin',
+  'f.gem2.d': 'Kısa özet, ders notu, soru-cevap ya da “izlemeye değer mi?”; ya da kendi istemini yaz. Özet dilini seç, videoya bağlanan zaman damgaları ekle.',
+  'q6': 'Gemini özeti verilerimi bir yere gönderiyor mu?',
+  'a6': 'Yalnızca senin gönderdiğin yere. Eklenti videonun transkriptini YouTube’dan okur ve bir istemle birlikte senin açtığın Gemini sekmesine yazar. Hiçbir şey bizim bir sunucumuzdan geçmez. Kopyala düğmesi her şeyi panonda tutar; özelliği tamamen kapatabilirsin.',
   'cta.title': 'YouTube’a sessiz bir yükseltme.', 'cta.sub': 'Chrome ve Firefox için ücretsiz. Birkaç saniye sürer.',
   'ft.privacy': 'Gizlilik', 'ft.support': 'Destek',
   'ft.legal': 'Kolay for YouTube bağımsız bir projedir; YouTube veya Google LLC ile bağlantılı değildir, onlar tarafından desteklenmez ya da onaylanmaz. YouTube, Google LLC’nin ticari markasıdır.',

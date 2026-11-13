@@ -37,6 +37,7 @@
       nm('sp_preset', 'Preset speed', 1.5, 0.1, 16, 0.05, 'The value the preset shortcut applies.', { quick: true }),
       nm('sp_step', 'Slower / faster step', 0.1, 0.05, 2, 0.05),
       tg('sp_remember', 'Remember the last speed browser-wide', true, 'The last speed you chose is applied automatically to every video on every site.', { quick: true }),
+      tg('sp_perSite', 'Remember the speed separately for each site', false, 'For example 1.5x on YouTube and 1x everywhere else. Needs the option above.', { dep: 'sp_remember' }),
       tg('sp_pitch', 'Preserve pitch when speed changes', true),
       tg('sp_osd', 'Show speed on screen when it changes', true),
     ], TOP),
@@ -46,9 +47,15 @@
       tg('e_premium', 'Prefer the high-bitrate version when available', true, 'If a “Premium / enhanced bitrate” option exists at the chosen resolution, it is used; otherwise falls back to the regular one.', { quick: true, dep: 'e_quality!=auto' }),
     ], TOP),
 
-    sec('gemini', 'Gemini summary (YouTube)', 'gemini', 'Adds a ✦ button to video tiles. It fetches the video’s transcript and opens Gemini in a new tab with a ready prompt that asks for a short summary.', [
+    sec('gemini', 'Gemini summary (YouTube)', 'gemini', 'Adds a ✦ button to video tiles and the watch page. It fetches the video’s transcript and opens Gemini in a new tab with a ready prompt. Shift+click on tiles to select several videos and summarize them together.', [
       tg('m_gemini', 'Show the Gemini summary button on video tiles', true, 'Appears when you hover over a video. The transcript is read from YouTube and only handed to the Gemini tab you open.', { quick: true }),
       tg('g_autoSend', 'Send the prompt to Gemini automatically', true, 'When off, the prompt is only typed into the chat box and you press send yourself.', { dep: 'm_gemini' }),
+      sl('g_template', 'Prompt template', 'summary', [['summary', 'Short summary'], ['notes', 'Study notes'], ['qa', 'Questions and answers'], ['worth', 'Is it worth watching?'], ['custom', 'My own prompt']], 'What Gemini is asked to produce.', { dep: 'm_gemini' }),
+      ta('g_customPrompt', 'My own prompt', '', 'Used when the template is “My own prompt”. You can use {title}, {channel}, {link} and {language}. The transcript is attached automatically.', { dep: 'g_template=custom' }),
+      sl('g_lang', 'Summary language', 'ui', [['ui', 'Same as the interface language']].concat(LANGS.map(([c, n]) => [c, n, 0])), 'The language the summary is written in.', { dep: 'm_gemini' }),
+      tg('g_timestamps', 'Include timestamps', false, 'The transcript is sent with [mm:ss] marks and the summary gets a timeline whose entries link to the exact moment in the video.', { dep: 'm_gemini' }),
+      sc('g_key', 'Shortcut: summarize the current video', 'Shift+S', 'Works on the watch page. Empty = off.', { dep: 'm_gemini' }),
+      nm('g_account', 'Google account number for Gemini', 0, 0, 9, 1, '0 = the default account. Use 1, 2… to open gemini.google.com/u/1/ and so on if you are signed in to several accounts.', { dep: 'm_gemini' }),
     ], TOP),
 
     sec('hide', 'Hiding (YouTube)', 'clutter', 'Each item can be turned on or off separately. Detailed filters are in the “Other” sections below.', [
@@ -146,6 +153,12 @@
       sc('s_volUp', 'Volume up', ''),
       sc('s_volDown', 'Volume down', ''),
       nm('s_volStep', 'Volume shortcut step (%)', 5, 1, 25, 1),
+    ]),
+
+    sec('geminiDiag', 'Gemini summary: diagnostics', 'gemini', 'If a summary does not work, the reason is kept here. Nothing leaves your browser.', [
+      ac('gemLast', 'Show the last problem', 'Where it went wrong the last time (YouTube side or Gemini side).'),
+      ac('gemCopy', 'Copy diagnostics', 'Copies the version, the last problem and the last Gemini page check to the clipboard, for a bug report.'),
+      ac('gemClear', 'Clear history', 'Deletes the list of recent summaries and the stored problem.', { danger: true }),
     ]),
 
     sec('general', 'General', null, 'Language, the extension’s master switch and advanced settings.', [

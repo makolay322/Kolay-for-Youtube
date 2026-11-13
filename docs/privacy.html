@@ -37,9 +37,9 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 56px 0 0; }
   <a class="logo" href="./"><img src="icon.svg" alt="" width="30" height="30">Kolay for YouTube</a>
 
   <h1>Privacy Policy</h1>
-  <p class="meta">Last updated: November 4, 2026 · <a href="#tr">Türkçe</a></p>
+  <p class="meta">Last updated: November 13, 2026 · <a href="#tr">Türkçe</a></p>
 
-  <p class="tldr">Kolay for YouTube does not collect, store, sell or transmit any personal data. It makes no network requests at all.</p>
+  <p class="tldr">Kolay for YouTube does not collect, sell or transmit your personal data to the developer or to anyone else. It has no server, no analytics and no account. The only network traffic it causes is the optional Gemini summary feature, described below.</p>
 
   <h2>What the extension stores</h2>
   <p>Kolay for YouTube saves the following only in your own browser, using the browser's extension storage (<code>storage.local</code>). This data never leaves your device and is not accessible to the developer or to anyone else.</p>
@@ -47,14 +47,19 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 56px 0 0; }
     <tr><th>Data</th><th>Why</th></tr>
     <tr><td>Your settings (switches, shortcuts, filters, preferred speed, volume and quality)</td><td>So the extension behaves the way you configured it.</td></tr>
     <tr><td>IDs of recommended videos and how many times each has been shown</td><td>Only when the “Repeated videos” feature is on, to hide recommendations you've already seen several times. Old entries are deleted automatically (30 days by default) and you can reset them at any time in the settings.</td></tr>
+    <tr><td>A short history of recent Gemini summaries (video ID, title, status) and the last error</td><td>Only when you use the Gemini summary, to show it on the settings page and to help you troubleshoot. You can clear it at any time.</td></tr>
+    <tr><td>The transcript of a video you asked to summarize</td><td>Held for a moment in the extension storage so it can be handed to your Gemini tab; removed as soon as that tab picks it up (or after about ten minutes).</td></tr>
   </table>
   <p>Removing the extension deletes all of this data.</p>
+
+  <h2>Gemini summary (optional)</h2>
+  <p>When you click the ✦ button, the extension asks YouTube for that video's transcript (the same caption data the YouTube page itself uses), then passes the transcript and a prompt to a <code>gemini.google.com</code> tab that you open, through the browser's extension storage. Nothing passes through a server of ours. Gemini is a Google service with its own privacy policy, and whatever you send there is governed by it. The copy button puts the same text on your clipboard instead. If you turn the feature off in the settings, none of this happens.</p>
 
   <h2>What the extension does not do</h2>
   <ul>
     <li>No analytics, telemetry, crash reporting or tracking of any kind.</li>
     <li>No accounts, no cookies, no advertising.</li>
-    <li>No network requests to any server, and no remotely hosted code.</li>
+    <li>No requests to the developer's or to any analytics server, and no remotely hosted code. The only requests are the optional Gemini-summary ones to YouTube described above.</li>
     <li>No reading of your browsing history, passwords, form data or page content outside the features described below.</li>
   </ul>
 
@@ -63,6 +68,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 56px 0 0; }
     <tr><th>Permission</th><th>Why it is needed</th></tr>
     <tr><td><code>storage</code></td><td>To save your settings locally.</td></tr>
     <tr><td>Access to <code>youtube.com</code></td><td>To apply the hiding, quality, player and layout features on YouTube pages.</td></tr>
+    <tr><td>Access to <code>gemini.google.com</code></td><td>Only for the Gemini summary: to type the prompt you asked for into the chat box (and attach the transcript).</td></tr>
     <tr><td>Access to all websites</td><td>Only for the video speed shortcuts, which work on videos on any site. This script listens for your configured shortcut keys and changes the playback speed of <code>&lt;video&gt;</code> elements. It reads nothing else from the page.</td></tr>
   </table>
 
@@ -77,25 +83,30 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 56px 0 0; }
   <hr>
   <div id="tr" class="tr" lang="tr">
     <h1>Gizlilik Politikası</h1>
-    <p class="meta">Son güncelleme: 4 Kasım 2026</p>
-    <p class="tldr">Kolay for YouTube hiçbir kişisel veriyi toplamaz, saklamaz, satmaz veya iletmez. Hiçbir ağ isteği yapmaz.</p>
+    <p class="meta">Son güncelleme: 13 Kasım 2026</p>
+    <p class="tldr">Kolay for YouTube kişisel verilerini ne geliştiriciye ne de başkasına toplamaz, satmaz veya iletmez. Sunucusu, analitiği ve hesabı yoktur. Yaptığı tek ağ trafiği, aşağıda anlatılan isteğe bağlı Gemini özeti özelliğidir.</p>
     <h2>Eklentinin sakladıkları</h2>
     <p>Aşağıdakiler yalnızca kendi tarayıcında, tarayıcının eklenti depolamasında (<code>storage.local</code>) tutulur. Bu veriler cihazından hiç çıkmaz; geliştirici dahil kimse erişemez.</p>
     <ul>
       <li><b>Ayarların</b> (anahtarlar, kısayollar, filtreler, tercih edilen hız, ses ve kalite) — eklentinin senin ayarladığın gibi çalışması için.</li>
       <li><b>Önerilen videoların kimlikleri ve kaç kez gösterildikleri</b> — yalnızca “Tekrar eden videolar” özelliği açıksa, defalarca gördüğün önerileri gizlemek için. Eski kayıtlar otomatik silinir (varsayılan 30 gün) ve ayarlardan istediğin an sıfırlanabilir.</li>
+      <li><b>Son Gemini özetlerinin kısa geçmişi</b> (video kimliği, başlık, durum) ve son hata — yalnızca Gemini özetini kullanırsan, ayarlar sayfasında göstermek ve sorun gidermene yardım etmek için. İstediğin an temizleyebilirsin.</li>
+      <li><b>Özetletmek istediğin videonun transkripti</b> — Gemini sekmene aktarılabilmesi için eklenti depolamasında kısa süre bekler; sekme alır almaz (ya da yaklaşık on dakika sonra) silinir.</li>
     </ul>
     <p>Eklentiyi kaldırmak bu verilerin tamamını siler.</p>
+    <h2>Gemini özeti (isteğe bağlı)</h2>
+    <p>✦ düğmesine tıkladığında eklenti, YouTube’dan o videonun transkriptini ister (YouTube sayfasının kendi kullandığı altyazı verisi), sonra transkripti ve bir istemi, tarayıcının eklenti depolaması üzerinden senin açtığın bir <code>gemini.google.com</code> sekmesine aktarır. Hiçbir şey bizim bir sunucumuzdan geçmez. Gemini, kendi gizlilik politikası olan bir Google hizmetidir; oraya gönderdiğin şeyler o politikaya tabidir. Kopyala düğmesi aynı metni panoya koyar. Özelliği ayarlardan kapatırsan bunların hiçbiri olmaz.</p>
     <h2>Eklentinin yapmadıkları</h2>
     <ul>
       <li>Analitik, telemetri, hata raporlama ya da herhangi bir takip yok.</li>
       <li>Hesap, çerez ve reklam yok.</li>
-      <li>Hiçbir sunucuya ağ isteği yok, uzaktan yüklenen kod yok.</li>
+      <li>Geliştiriciye ya da herhangi bir analitik sunucusuna istek yok, uzaktan yüklenen kod yok. Tek istekler, yukarıda anlatılan isteğe bağlı Gemini özetinin YouTube’a yaptıklarıdır.</li>
     </ul>
     <h2>İzinler</h2>
     <ul>
       <li><code>storage</code>: ayarları yerel olarak kaydetmek için.</li>
       <li><code>youtube.com</code> erişimi: gizleme, kalite, oynatıcı ve sayfa düzeni özellikleri için.</li>
+      <li><code>gemini.google.com</code> erişimi: yalnızca Gemini özeti için, istediğin istemi sohbet kutusuna yazmak (ve transkripti eklemek) için.</li>
       <li>Tüm sitelere erişim: yalnızca her sitedeki videolarda çalışan hız kısayolları için. Bu betik sadece kısayol tuşlarını dinler ve <code>&lt;video&gt;</code> öğelerinin hızını değiştirir; sayfadan başka hiçbir şey okumaz.</li>
     </ul>
     <h2>Açık kaynak ve iletişim</h2>

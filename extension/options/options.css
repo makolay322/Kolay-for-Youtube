@@ -88,3 +88,13 @@ label.label { display: block; cursor: pointer; }
 .row.conflict .keybox { border-color: var(--warn); }
 .conflict-msg { color: var(--warn); font-size: 12.5px; }
 .conflict-msg:empty { display: none; }
+
+/* Gemini summary history */
+.gem-hist { padding: 4px 16px 14px; display: grid; gap: 6px; }
+.gem-hist-title { font-weight: 600; margin-top: 6px; }
+.gem-hist-row { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; font-size: 13px; }
+.gem-hist-row.bad .gem-hist-mark { color: var(--warn); }
+.gem-hist-mark { width: 14px; }
+.gem-hist-name { flex: 1 1 200px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gem-hist-when { color: var(--muted); font-size: 12px; }
+.gem-hist a { color: var(--accent); }

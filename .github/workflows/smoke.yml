@@ -1,0 +1,48 @@
+name: Transcript smoke test
+
+# The Gemini summary reads transcripts through YouTube's own endpoints, which can change without notice.
+# This checks a few fixed videos every day and opens an issue when fetching breaks.
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  transcript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch transcripts
+        id: smoke
+        run: python3 tools/smoke-transcript.py
+        continue-on-error: true
+      - name: Open an issue when it broke
+        if: steps.smoke.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --label transcript-smoke --json number --jq '.[0].number')
+          body="The daily transcript smoke test failed: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+
+          YouTube may have changed its player endpoint or caption format. Check CLIENTS in extension/content/summarize.js and tools/smoke-transcript.py."
+          if [ -z "$existing" ]; then
+            gh label create transcript-smoke --repo "$GITHUB_REPOSITORY" --color d93f0b --description "Transcript fetching broke" 2>/dev/null || true
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "Gemini summary: transcript fetching is failing" --label transcript-smoke --body "$body"
+          else
+            gh issue comment "$existing" --repo "$GITHUB_REPOSITORY" --body "$body"
+          fi
+      - name: Close the issue when it works again
+        if: steps.smoke.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for n in $(gh issue list --repo "$GITHUB_REPOSITORY" --state open --label transcript-smoke --json number --jq '.[].number'); do
+            gh issue close "$n" --repo "$GITHUB_REPOSITORY" --comment "Works again: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          done
+      - name: Fail the job if it broke
+        if: steps.smoke.outcome == 'failure'
+        run: exit 1
