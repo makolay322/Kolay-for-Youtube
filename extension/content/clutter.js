@@ -156,15 +156,27 @@
       }
       shelf.toggleAttribute(ATTR, hide);
     });
-    // Surveys ("Did you like this video?") — short-text sections
+    // Surveys ("Did you like this video?"): short-text sections, only looked at while the option is on
+    if (!S.c_irrelevant) return;
     document.querySelectorAll(SURVEY_SELECTOR).forEach((el) => {
-      if (el.hasAttribute(ATTR) && !S.c_irrelevant) return;
-      if (el.matches('ytd-rich-section-renderer') && el.querySelector(SHELF_SELECTOR.replace('ytd-rich-section-renderer, ', ''))) return;
-      const text = el.textContent.replace(/\s+/g, ' ').trim();
-      const hide = !!S.c_irrelevant && text.length < 300 && SURVEY_TEXT.test(text);
+      if (el.matches('ytd-rich-section-renderer') && (el.hasAttribute(ATTR) || el.querySelector(SHELF_SELECTOR.replace('ytd-rich-section-renderer, ', '')))) return;
+      const text = shortText(el, 300);
+      const hide = text !== null && SURVEY_TEXT.test(text);
       if (hide) el.setAttribute(ATTR, '');
       else if (el.matches('ytd-inline-survey-renderer, ytd-item-section-renderer')) el.removeAttribute(ATTR);
     });
+  }
+
+  // Text of an element, or null as soon as it turns out to be long: big sections (comments, results) are not read whole
+  function shortText(el, max) {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    let out = '', n;
+    while ((n = w.nextNode())) {
+      out += n.nodeValue;
+      if (out.length > max * 4) return null;
+    }
+    out = out.replace(/\s+/g, ' ').trim();
+    return out.length < max ? out : null;
   }
 
   YTX.register({

@@ -42,6 +42,18 @@
       return true;
     },
     setVolume(p, v) { if (p.unMute && v > 0) p.unMute(); p.setVolume(Math.max(0, Math.min(100, v))); return true; },
+    // Caption tracks of the video the player is showing (the page is signed in, so age-restricted and members-only videos work too)
+    getCaptionTracks(p, id) {
+      const pr = p.getPlayerResponse && p.getPlayerResponse();
+      if (!pr || !pr.videoDetails || (id && pr.videoDetails.videoId !== id)) return null;
+      const r = pr.captions && pr.captions.playerCaptionsTracklistRenderer;
+      return {
+        status: pr.playabilityStatus && pr.playabilityStatus.status,
+        live: !!(pr.videoDetails.isLive || pr.videoDetails.isLiveContent),
+        captionTracks: (r && r.captionTracks) || [],
+        audioTracks: (r && r.audioTracks) || [],
+      };
+    },
     getInfo(p) {
       const d = (p.getVideoData && p.getVideoData()) || {};
       return { id: d.video_id, title: d.title, author: d.author, isLive: !!d.isLive, volume: p.getVolume && p.getVolume(), muted: p.isMuted && p.isMuted() };

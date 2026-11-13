@@ -27,3 +27,9 @@ Raise the version **slowly**. Every bump is a real store release, so:
 - Do not bump on every commit. Batch several changes into one release, and only release when the owner asks for it or the change is worth shipping.
 - Default to a **patch** bump (1.4.0 -> 1.4.1) for fixes and small tweaks. Use a **minor** bump (1.4.x -> 1.5.0) only for a clearly new feature, and a **major** bump only for breaking changes, and only when the owner says so.
 - Never skip numbers (no 1.4.0 -> 1.6.0 or 1.9.0). Check the latest tag (`git tag --sort=-v:refname | head -1`) and go one step from it.
+
+## Gemini summary: where things live
+- `extension/content/summarize.js` (YouTube side: buttons, transcript fallback chain, prompts, batch mode) and `extension/content/gemini.js` (gemini.google.com side: attach, fill, send). They talk through `chrome.storage.local` keys `ytxGemini:<token>`; the token travels in the URL hash `#ytx=<token>`.
+- YouTube client versions for the transcript live in `CLIENTS` in `summarize.js` (and are mirrored in `tools/smoke-transcript.py`). Gemini selectors live in `SELECTORS` at the top of `gemini.js`.
+- `.github/workflows/smoke.yml` fetches three fixed transcripts daily and opens an issue labelled `transcript-smoke` when it breaks.
+- Diagnostics (last problem, history, Gemini page check) are in `chrome.storage.local` (`ytxGeminiLast`, `ytxGeminiHistory`, `ytxGeminiHealth`) and shown in the settings page.

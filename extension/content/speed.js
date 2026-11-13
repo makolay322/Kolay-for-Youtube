@@ -7,6 +7,8 @@
   window.__ytxSpeed = true;
 
   const KEY = 'ytxSpeed';
+  const SITES_KEY = 'ytxSpeedSites'; // { hostname: speed } when "remember separately for each site" is on
+  let sites = {};
   let s = Object.assign({}, YTX.DEFAULTS);
   // On-screen label; kept here so the all-sites script stays tiny (no locale files)
   const SPEED_WORD = { en: 'Speed', tr: 'Hız', es: 'Velocidad', pt: 'Velocidade', de: 'Geschwindigkeit', fr: 'Vitesse', ru: 'Скорость', ja: '速度' };
@@ -62,7 +64,10 @@
     gen++;
     rate = r;
     setRate(v, r);
-    try { chrome.storage.local.set({ [KEY]: r }); } catch (e) { /* extension was reloaded */ }
+    try {
+      if (s.sp_perSite) { sites[location.hostname] = r; chrome.storage.local.set({ [SITES_KEY]: sites }); }
+      else chrome.storage.local.set({ [KEY]: r });
+    } catch (e) { /* extension was reloaded */ }
     osd(v, `${speedWord()}: ${r}×`);
     return true;
   }
@@ -110,14 +115,20 @@
   chrome.storage.onChanged.addListener((ch, area) => {
     if (area !== 'local') return;
     if (ch[YTX.STORE_KEY]) s = Object.assign({}, YTX.DEFAULTS, ch[YTX.STORE_KEY].newValue || {});
-    if (ch[KEY] && typeof ch[KEY].newValue === 'number') rate = clamp(ch[KEY].newValue); // changed in another tab: for upcoming videos
+    if (ch[SITES_KEY]) {
+      sites = ch[SITES_KEY].newValue || {};
+      if (s.sp_perSite && typeof sites[location.hostname] === 'number') rate = clamp(sites[location.hostname]);
+    }
+    if (ch[KEY] && typeof ch[KEY].newValue === 'number' && !s.sp_perSite) rate = clamp(ch[KEY].newValue); // changed in another tab: for upcoming videos
   });
 
   (async function boot() {
     try {
-      const [a, b] = await Promise.all([YTX.loadSettings(), chrome.storage.local.get(KEY)]);
+      const [a, b] = await Promise.all([YTX.loadSettings(), chrome.storage.local.get([KEY, SITES_KEY])]);
       s = a;
+      sites = b[SITES_KEY] || {};
       if (typeof b[KEY] === 'number') rate = clamp(b[KEY]);
+      if (s.sp_perSite) rate = typeof sites[location.hostname] === 'number' ? clamp(sites[location.hostname]) : 1;
     } catch (e) { return; }
     start();
   })();

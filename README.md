@@ -18,7 +18,8 @@ Kolay for YouTube is a free, open-source browser extension for **Chrome, Edge, B
 - 🧹 **A quieter feed.** Hide Shorts, Mixes, surveys, Playables, "Explore new topics", watched videos and live streams, each on its own switch.
 - 🔁 **Repeat hider.** Recommendations you've scrolled past three times disappear.
 - 🗑️ **Playlist cleaner.** Empty Watch Later or any of your own playlists with one click.
-- 🔒 **No tracking.** No servers, no analytics, no network requests. Settings stay in your browser.
+- ✦ **Gemini summary.** A button on video tiles and the watch page reads the transcript and opens Gemini with a ready prompt. Several templates, any summary language, timestamps, batch mode, and a copy button for other chatbots.
+- 🔒 **No tracking.** No servers, no analytics, no account. Settings stay in your browser. The only network use is the optional Gemini summary (see below).
 
 ## Install
 
@@ -32,6 +33,8 @@ The store versions update themselves. To install a specific version by hand, dow
 - **Chromium:** extract `kolay-for-youtube-<ver>-chrome.zip` into a permanent folder, open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked** and select the folder.
 - **Firefox:** open `about:debugging#/runtime/this-firefox`, click **Load Temporary Add-on…** and pick `kolay-for-youtube-<ver>-firefox.zip`. Firefox removes temporary add-ons when it restarts.
 
+> **Why does it need `gemini.google.com`?** Only for the Gemini summary: a small script there types the prompt you asked for into the chat box. The transcript is read from YouTube and handed to that tab through the browser's extension storage; nothing goes to any server of ours.
+
 > **Why "read and change data on all websites"?** The speed hotkeys work on videos on every site. That script only listens for your shortcut keys and changes the speed of `<video>` elements. It reads nothing else and sends nothing anywhere. You can limit site access in your browser's extension settings.
 
 ## Features
@@ -40,8 +43,9 @@ The store versions update themselves. To install a specific version by hand, dow
 
 | Section | What it does |
 |---|---|
-| Video speed (all sites) | `G` preset speed, `R` 1×, `O` slower, `P` faster; keys and step are configurable. The last speed is remembered and applied to every video. |
+| Video speed (all sites) | `G` preset speed, `R` 1×, `O` slower, `P` faster; keys and step are configurable. The last speed is remembered and applied to every video (optionally per site). |
 | Video quality | Steps down automatically when the chosen quality is unavailable (4K → 1440p → 1080p → …). Prefers the high-bitrate (Premium) variant. |
+| Gemini summary | A ✦ button on tiles and the watch page (and a copy button). Templates: short summary, study notes, Q&A, "worth watching?", or your own prompt. Summary language, optional timestamps with links into the video, Shift+click to summarize several videos together, `Shift+S` on the watch page, Google account number. Falls back to a copy button when Gemini can't be filled; the last problem and a history are in the diagnostics section. |
 | Hiding | Shorts (everywhere), "Explore new topics", surveys and Playables, repeated videos, Mixes, course and podcast playlists, watched videos, live and ended streams (Subscriptions page). |
 
 **More** (lower on the settings page)
@@ -54,6 +58,7 @@ The store versions update themselves. To install a specific version by hand, dow
 | Player | Default or remembered volume, captions, no autoplay, pause when the tab is hidden, pause other tabs, theater mode, expanded description. |
 | Page layout | Hide comments, recommendations, live chat, end cards, watermark, shelves, info panels and ambient mode. Set videos per row and the progress bar color. |
 | Volume keys | Volume up and down. |
+| Gemini diagnostics | Last problem, recent summaries with "Retry", and a copy-diagnostics button for bug reports. |
 
 Settings can be searched, and exported or imported as a JSON file.
 

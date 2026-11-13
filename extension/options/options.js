@@ -4,16 +4,17 @@
   const YTX = window.YTX;
   const { t, tr } = YTX;
   const REPEAT_KEY = 'repeatCounts';
+  const GEM_LAST = 'ytxGeminiLast', GEM_HEALTH = 'ytxGeminiHealth', GEM_HIST = 'ytxGeminiHistory';
   let settings = Object.assign({}, YTX.DEFAULTS);
   let rows = {}; // key -> { item, el }
 
   const $ = (sel, root) => (root || document).querySelector(sel);
   const h = YTX.h;
   let toastTimer;
-  function toast(msg) {
+  function toast(msg, ms) {
     const el = $('#toast');
     el.textContent = msg; el.classList.add('on');
-    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('on'), 2400);
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('on'), ms || 2400);
   }
 
   let savedTimer;
@@ -47,6 +48,40 @@
       if (!confirm(t('ui.confirmCounters', 'Delete all impression counters?'))) return;
       await chrome.storage.local.remove(REPEAT_KEY);
       toast(t('ui.countersReset', 'Counters reset.'));
+    } else if (id === 'gemLast') {
+      const last = (await chrome.storage.local.get(GEM_LAST))[GEM_LAST];
+      if (!last) { toast(t('ui.gemNone', 'No problem recorded.')); return; }
+      toast(t('ui.gemLast', '{when} · {side} · {stage}: {msg}', {
+        when: new Date(last.ts).toLocaleString(), side: last.side || 'youtube', stage: last.stage || last.code || '', msg: last.message || '',
+      }), 12000);
+    } else if (id === 'gemCopy') {
+      const r = await chrome.storage.local.get([GEM_LAST, GEM_HEALTH, GEM_HIST]);
+      const info = { version: chrome.runtime.getManifest().version, browser: navigator.userAgent, last: r[GEM_LAST] || null, geminiPageCheck: r[GEM_HEALTH] || null, recent: (r[GEM_HIST] || []).slice(0, 5) };
+      try { await navigator.clipboard.writeText(JSON.stringify(info, null, 2)); toast(t('ui.gemCopied', 'Diagnostics copied.')); }
+      catch (e) { toast(t('ui.gemCopyFail', 'Could not copy.')); }
+    } else if (id === 'gemClear') {
+      if (!confirm(t('ui.gemConfirmClear', 'Delete the summary history and the stored problem?'))) return;
+      await chrome.storage.local.remove([GEM_LAST, GEM_HEALTH, GEM_HIST]);
+      renderHistory();
+      toast(t('ui.gemCleared', 'History cleared.'));
+    }
+  }
+
+  // Recent Gemini summaries under the diagnostics section; "Retry" opens the video, fetches the transcript and offers to open Gemini
+  async function renderHistory() {
+    const box = $('#gemHist');
+    if (!box) return;
+    const list = (await chrome.storage.local.get(GEM_HIST))[GEM_HIST] || [];
+    box.textContent = '';
+    box.append(h('div', { class: 'gem-hist-title' }, t('ui.gemHist', 'Recent summaries')));
+    if (!list.length) { box.append(h('div', { class: 'desc' }, t('ui.gemHistEmpty', 'Nothing yet.'))); return; }
+    for (const it of list) {
+      const retry = it.mode === 'batch' ? null : h('a', { href: 'https://www.youtube.com/watch?v=' + encodeURIComponent(it.id) + '#ytx-sum', target: '_blank', rel: 'noopener' }, t('ui.gemRetry', 'Retry'));
+      box.append(h('div', { class: 'gem-hist-row' + (it.state === 'error' ? ' bad' : '') },
+        h('span', { class: 'gem-hist-mark' }, it.state === 'error' ? '✗' : '✓'),
+        h('span', { class: 'gem-hist-name' }, it.title || it.id),
+        h('span', { class: 'gem-hist-when' }, new Date(it.ts).toLocaleString() + (it.code ? ' · ' + it.code : '')),
+        retry));
     }
   }
 
@@ -78,8 +113,10 @@
         if (item.key) rows[item.key] = { item, el: row };
         card.append(row);
       }
+      if (sec.id === 'geminiDiag') card.append(h('div', { id: 'gemHist', class: 'gem-hist' }));
       main.append(card);
     });
+    renderHistory();
     updateDeps();
     updateConflicts();
     observeSections();
